@@ -14,7 +14,7 @@ export default async function handle(req, res) {
     const { title, content } = req.body;
     //const session = await getToken({ req, secret });
     //const session = await getSession({ req });
-    console.log(req.headers, req.cookies);
+    //console.log(req.headers, req.cookies);
     const request = {
         headers: req.headers,
         cookies: req.cookies
@@ -22,7 +22,7 @@ export default async function handle(req, res) {
     const response = { getHeader() {}, setCookie() {}, setHeader() {} };
 
     const session = await getServerSession(request as any, response as any, options);
-    console.log(title, content, session, req.body, JSON.stringify(session, null, 2));
+    //console.log(title, content, session, req.body, JSON.stringify(session, null, 2));
     const result = await prisma.post.create({
         data: {
             title: title,

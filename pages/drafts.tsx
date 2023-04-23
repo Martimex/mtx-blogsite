@@ -13,9 +13,16 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
         return { props: { drafts: [] } };
     }
 
-    const drafts = await prisma.post.findMany({
+    const sessionUserData = await prisma.user.findUnique({
+        where: { email: String(session.user.email) },
+        select: {
+            id: true,
+        }
+
+    });
+
+    const allDrafts = await prisma.post.findMany({
         where: {
-            author: { email: session.user.email },
             published: false, 
         },
         include: {
@@ -24,6 +31,9 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
             },
         },
     });
+
+    const drafts = [].concat(allDrafts).filter(post => post.authorId === sessionUserData.id)
+
     return {
         props: { drafts },
     };
@@ -34,6 +44,7 @@ type Props = {
 };
 
 const Drafts: React.FC<Props> = (props) => {
+    console.log(props);
     const { data: session } = useSession();
 
     if(!session) {
