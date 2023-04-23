@@ -24,7 +24,6 @@ type Props = {
 }
 
 const Blog: React.FC<Props> = (props) => {
-  console.warn(props);
   return (
     <Layout>
       <div className="page">
